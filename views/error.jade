@@ -1,0 +1,17 @@
+extends layout
+
+block head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+block content
+    .jumbotron
+        .container-fluid.text-center
+            h1= message
+            h2.text-danger
+                span.glyphicon.glyphicon-remove-sign
+                |  #{error.status}
+    .container
+        .row
+            .col-xs-12.col-md-8.col-md-offset-2
+                pre #{error.stack}

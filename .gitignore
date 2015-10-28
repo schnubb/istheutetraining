@@ -25,3 +25,17 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+public/javascripts/bootstrap.min.js
+public/javascripts/jquery.min.js
+*.scss
+public/fonts/glyphicons-halflings-regular.eot
+public/fonts/glyphicons-halflings-regular.svg
+public/fonts/glyphicons-halflings-regular.woff
+public/fonts/glyphicons-halflings-regular.ttf
+public/fonts/glyphicons-halflings-regular.woff2
+public/stylesheets/style.css.map
+public/fonts/bootstrap/glyphicons-halflings-regular.woff2
+public/fonts/bootstrap/glyphicons-halflings-regular.svg
+public/fonts/bootstrap/glyphicons-halflings-regular.eot
+public/fonts/bootstrap/glyphicons-halflings-regular.ttf
+public/fonts/bootstrap/glyphicons-halflings-regular.woff

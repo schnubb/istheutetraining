@@ -1,0 +1,25 @@
+extends ../layout
+
+block head
+    title= title
+    
+    script(src="/javascripts/iht.js", type="text/javascript")
+
+block content
+
+    .jumbotron
+        .container-fluid.text-center
+            h1
+                small= title
+            p(class=data.class)=data.answer
+    .container
+        .row
+            .col-xs-12.col-md-6.col-md-offset-3.text-center.form-group
+                if data.class == "h1"
+                    h2 Und wann?
+                    p.text-warning
+                        span.glyphicon.glyphicon-time
+                        |  von #{times[0]} bis #{times[1]} Uhr. 
+                else
+                    h2 Leider ist heute kein Training
+                    p.h2 Das nächste Training ist am #{data.nextDay.day} ab #{data.nextDay.time} Uhr.
