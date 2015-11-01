@@ -58,4 +58,8 @@ router.get('/', function(req, res, next) {
   res.render('templates/index', { title: 'Ist heute Training?', data:isTraining(), times:trainingDays[date.getDay()]});
 });
 
+router.get('/imprint', function(req, res, next) {
+    res.render('templates/imprint', {title: 'Impressum'})
+});
+
 module.exports = router;
