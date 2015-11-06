@@ -2,24 +2,29 @@ extends ../layout
 
 block head
     title= title
-    
-    script(src="/javascripts/iht.js", type="text/javascript")
+
+    script(src="javascripts/iht.js", type="text/javascript")
+
+    script(src="javascripts/app.js", type="text/javascript")
+
+    script(src="javascripts/controller/istTraining.js", type="text/javascript")
 
 block content
 
     .jumbotron
-        .container-fluid.text-center
+        .container-fluid.text-center(ng-model="answer")
             h1
                 small= title
-            p(class=data.class)=data.answer
+            p(class="{{content.class}}") {{content.answer}}
     .container
         .row
-            .col-xs-12.col-md-6.col-md-offset-3.text-center.form-group
-                if data.class == "h1"
+            .col-xs-12.col-md-6.col-md-offset-3.text-center.form-group(ng-model="times")
+                .is-training.hidden
                     h2 Und wann?
                     p.text-warning
                         span.glyphicon.glyphicon-time
-                        |  von #{times[0]} bis #{times[1]} Uhr. 
-                else
+                        | von {{content.timeFromTo}} Uhr.
+
+                .no-training.hidden
                     h2 Leider ist heute kein Training
-                    p.h2 Das nächste Training ist am #{data.nextDay.day} ab #{data.nextDay.time} Uhr.
+                    p.h2 Das nächste Training ist am {{content.nextDay | date: "EEEE"}} ab {{content.nextDay | date: "HH:mm"}} Uhr.
