@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var exceptions = [];
+var exceptions = [
+    (new Date(2015, 10, 9)).getTime()
+];
 var trainingDays = [
     [],                         // Sonntag
     ["17:00","19:00"],          // Montag
@@ -31,7 +33,10 @@ module.exports.sockets = function(io) {
         socket.join("iht");
 
         socket.on("join", function() {
-            nsp.emit("hello", {days:trainingDays});
+            nsp.emit("hello", {days:trainingDays, except: exceptions});
         });
+        socket.on("debug", function(mode) {
+            nsp.emit("hello", {days:trainingDays, except: exceptions, debug:mode})
+        })
     });
 };

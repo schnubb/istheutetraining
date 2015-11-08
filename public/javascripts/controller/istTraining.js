@@ -1,5 +1,8 @@
 app.controller('istTraining', function($scope, Socket) {
     $scope.trainings = [];
+    $scope.exceptions = [];
+
+    $scope.debug = false;
 
     $scope.content = {
         answer: "",
@@ -8,10 +11,33 @@ app.controller('istTraining', function($scope, Socket) {
         nextDay: {}
     };
 
+    exceptThisDate = function (checkdate) {
+        checkdate = new Date(checkdate);
+        var checkstring = checkdate.getDate() + "." + checkdate.getMonth() + '.' + checkdate.getFullYear();
+
+        if($scope.debug) console.log($scope.exceptions, checkstring);
+
+        if($scope.exceptions.length == 0) return false;
+
+        for(var i in $scope.exceptions) {
+            var exceptDate = new Date($scope.exceptions[i]);
+            var exceptstring = exceptDate.getDate() + "." + exceptDate.getMonth() + '.' + exceptDate.getFullYear();
+
+            if($scope.debug) console.log(checkstring, exceptstring);
+
+            if(checkstring == exceptstring) {
+                return true;
+            }
+        }
+
+        return false;
+    };
 
     isTraining = function (tDays) {
 
         var curWDay = new Date().getDay();
+
+        if($scope.debug) console.log(curWDay);
 
         if(tDays[curWDay].length > 0) {
 
@@ -35,15 +61,15 @@ app.controller('istTraining', function($scope, Socket) {
         var cur = new Date();
         cur.setHours(0);
         cur.setMinutes(0);
-        cur.setSeconds(0);
+        cur.setSeconds(1);
 
-        console.log(tDays, cur);
-
-        while (tDays[cur.getDay()].length === 0) {
-            nextDay = Date.parse(cur) + 86400000;
-            cur.setMilliseconds( nextDay );
-            console.log(cur);
+        while (tDays[cur.getDay()].length === 0 || exceptThisDate(cur.getTime())) {
+            cur.setTime( cur.getTime() + 86400000 );
+            if($scope.debug) console.log(cur, cur.getTime(), exceptThisDate(cur.getTime()));
         }
+
+        if($scope.debug) console.log( tDays[cur.getDay()] );
+
 
         // Correct time
         var startHour = tDays[cur.getDay()][0].split(":")[0];
@@ -51,12 +77,16 @@ app.controller('istTraining', function($scope, Socket) {
         cur.setHours(parseInt(startHour));
         cur.setMinutes(parseInt(startMin));
 
-        return Date.parse(cur);
+        if($scope.debug) console.log(cur);
+
+        return cur.getTime();
     };
 
     Socket.on("hello", function(t){
-        console.log(t);
         $scope.trainings = t.days;
+        $scope.exceptions = t.except;
+        $scope.debug = t.debug || false;
+        if($scope.debug) console.log(t);
         isTraining(t.days);
     });
 
