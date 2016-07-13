@@ -13,12 +13,30 @@ var getTrainingTimes = function(){
   }
   
   return res;
-}
+};
+
+var getIsTrainingToday = function() {
+  var today = new Date();
+  today.setHours(0);
+  today.setMinutes(0);
+  today.setSeconds(0);
+  today.setMilliseconds(0);
+
+  if(data.trainingDays[today.getDay()]) {
+    for(var i in exceptions) {
+      if(exceptions[i] == today.getTime()) return false;
+    }
+  } else {
+    return false;
+  }
+
+  return true;
+};
 
 
 router.get("/", function(req, res, next) {
   res.json({ error: "no request set" });
-  next();
+  //next();
 });
 
 router.get("/:action", function(req, res, next) {
@@ -28,6 +46,13 @@ router.get("/:action", function(req, res, next) {
   if(req.params.action == "training")
   {
     json.training = getTrainingTimes();
+  }
+
+  else if (req.params.action == "istraining")
+  {
+    var isTraining = getIsTrainingToday();
+    if(isTraining) res.json({istHeuteTraining: "ja", res:isTraining});
+    else res.json({istHeuteTraining:"nein", res: isTraining});
   }
   
   else
